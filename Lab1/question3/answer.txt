@@ -1,0 +1,14 @@
+3. What will be the output for the program with following operation?
+    Create a new file “f1” and write “abcde” in it and close
+    Open the file “f1” for writing with O_APPEND flag
+    lseek to the beginning of the file
+    Replace the existing data in the file with “12345”
+Justify your answer.
+
+The file will be "abcde12345" at the end of all the steps. Since the file is opened with the O_APPEND flag, the contents always get written
+at the end of the file.
+-- A snippet from manpage of "write" (man 2 write) --
+    If the file was open(2)ed with O_APPEND, the file offset is first set to the end of the file before writing.  The adjustment of the file offset
+    and the write operation are performed as an atomic step.
+
+To verify, try the code que3.c .
