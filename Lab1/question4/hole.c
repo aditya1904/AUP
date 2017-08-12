@@ -47,9 +47,10 @@ int main(int argc, char *argv[]){
         perror("Error ");
         exit(1);
     }
-    while((n = read(fd1, buf, 1)) > 0){
-        if(*buf != '\0'){
-            write(fd2, buf, 1);
+    char ch;
+    while((n = read(fd1, &ch, 1)) > 0){
+        if(ch != '\0'){
+            write(fd2, &ch, 1);
         }
     }
     close(fd1);
