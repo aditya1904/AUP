@@ -37,7 +37,9 @@ int main(int argc, char *argv[]){
         exit(1);
     }
     printf("Writing \"%s\" to file \"%s\"...\n", buffer2, filename);
-    lseek(fd1, 0, SEEK_SET);
+	int x;
+	x = lseek(fd1, 0, SEEK_SET);
+	printf("Offset after lseek -> %d \n",x);
     write(fd1, buffer2, strlen(buffer2));
     close(fd1);
 
