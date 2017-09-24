@@ -26,10 +26,10 @@ int main(int argc, char *argv[]){
 	}
 	else {
 		sleep(2);
-		printf("Writing \"%s\" to file \"%s\" in child process...\n", buffer2, filename);
+		printf("Trying to write \"%s\" to file \"%s\" in child process...\n", buffer2, filename);
 		write(fd1, buffer2, strlen(buffer2));
-	} 
+	}
 	close(fd1);
-  
+
 	return 0;
 }
