@@ -24,7 +24,6 @@ int main() {
 	params_t params;
 	pthread_mutex_init (&params.mutex , NULL);
 	pthread_cond_init (&params.done, NULL);
-	pthread_mutex_lock (&params.mutex);
 
 	int i;
 	for(i = 0; i < N; i++) {
