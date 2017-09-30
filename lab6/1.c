@@ -1,46 +1,44 @@
 #include<stdio.h>
-#include<pthreads.h>
+#include<pthread.h>
+#include<stdlib.h>
 
-int search_pattern(char *pat, char *txt)
-{
-    int M = strlen(pat);
-    int N = strlen(txt);
-  
-    /* A loop to slide pat[] one by one */
-    for (int i = 0; i <= N - M; i++)
-    {
-        int j;
-  
-        /* For current index i, check for pattern match */
-        for (j = 0; j < M; j++)
-            if (txt[i+j] != pat[j])
-                break;
- 
-        if (j == M)  // if pat[0...M-1] = txt[i, i+1, ...i+M-1]
-    		return 1;
-    }
-    return 0;
-    
+typedef struct K{
+	char *pattern;
+	char *filename;
+	pthread_mutex_t mutex;
+	pthread_cond_t done;
+}K;
+
+void *search(void *k){
+	K *p = (K *)k;
+	pthread_mutex_lock(&p->mutex);
+	char *name = p->filename, *pattern = p->pattern;
+	pthread_mutex_unlock(&p->mutex);
+	pthread_cond_signal(&p->done);
+	char str[50];
+	sprintf(str, "grep %s %s > /dev/null", pattern, name);		
+	if(!system(str)){
+		printf("file %s has it. \n", name);	
+	}
+	return NULL;	
 }
 
-void search(char *name, char *pattern){
-	int fd = open(name);
-	char line[100];
-	while(read(fd, line, 100)){
-		if(search_pattern(line, pattern)){
-			printf("Found in %s\n", name);
-		}
-	}			
-}
-
-int main(){
+int main(int argc, char *argv[]){
 	pthread_t th[3];
 	int i;
-	for(i = 0; i < 3; i++){
-		pthread_create(&th[i], NULL, search, argv[1], argv[i + 2]);
+	struct K k;
+	pthread_mutex_init(&k.mutex, NULL);
+	pthread_cond_init(&k.done, NULL);
+
+	for(i = 0; i < argc - 2; i++){
+		k.pattern = argv[1];
+		k.filename = argv[i + 2];
+		printf("%s %s\n", k.pattern, k.filename);
+		pthread_create(&th[i], NULL, search, &k);
+		pthread_cond_wait(&k.done, &k.mutex);
 	}	
 
-	for(i = 0; i < 3; i++){
-		pthread_join(th[i]);	
-	}
+	for(i = 0; i < argc - 2; i++){
+		pthread_join(th[i], NULL);	
+	} 
 }

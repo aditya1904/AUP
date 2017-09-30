@@ -11,7 +11,7 @@ int main(int argc, char *argv[]){
 		exit(0);
 	}
 
-	fd = open(argv[1], O_RDWR);
+	fd = open(argv[1], O_RDWR | O_APPEND);
 	if (fd == -1){
 		perror("Cannot open");
 		exit(1);
@@ -26,9 +26,9 @@ int main(int argc, char *argv[]){
 		perror("file is less than 10 characters.\n");
 	}
 
-	if(fcntl(fd, F_SETFL, O_APPEND) == -1){
+/*	if(fcntl(fd, F_SETFL, O_APPEND) == -1){
 		perror("Some error\n");
-	}
+	}*/
 	if(write(fd, "hello", sizeof("hello")) == -1){
 		perror("Writing failed\n");
 	}
