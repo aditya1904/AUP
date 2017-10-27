@@ -16,16 +16,16 @@ unsigned long compt2ulong(comp_t comptime) /* convert comp_t to unsigned long */
 }
 
 int wait2(long *rtime,long *wtime){
-	int pid; 
+	int pid;
 	long temp;
 	pid =  wait(NULL);
 	fseek(fp, -sizeof(acdata), SEEK_END);
 	fread(&acdata,  sizeof(acdata), 1, fp);
-	printf("%d %d\n", compt2ulong(acdata.ac_utime), compt2ulong(acdata.ac_stime));
+	printf("%ld %ld\n", compt2ulong(acdata.ac_utime), compt2ulong(acdata.ac_stime));
 	temp = compt2ulong(acdata.ac_utime) + compt2ulong(acdata.ac_stime);
-	printf("%ld\n", temp);	
+	printf("%ld\n", temp);
 	*rtime = temp;
-	
+
 	temp = compt2ulong(acdata.ac_etime - acdata.ac_utime - acdata.ac_stime);
 	//temp = compt2ulong(acdata.ac_etime);
 	printf("%ld\n", temp);
@@ -41,6 +41,6 @@ int main(){
 		printf("%ld %ld %ld\n",pid, rtime, wtime);
 	}else{
 		int i = 0;
-		scanf("%d", &i);	
+		scanf("%d", &i);
 	}
 }
