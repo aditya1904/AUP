@@ -27,4 +27,5 @@ int main(){
 		err_sys("Can't catch SIGSEGV");
 	}
 	sleep(50);
+	pause();
 }
