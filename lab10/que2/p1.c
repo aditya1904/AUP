@@ -20,6 +20,7 @@ int main()
 		fd = open(fifofile, O_RDONLY);
 		read(fd, buf1, sizeof(buf1));
 		printf("P2: %s\t", buf1);
+		fflush(NULL);
 		close(fd);
 		num = num + 2;
 		if(num > 100){

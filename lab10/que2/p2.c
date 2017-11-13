@@ -15,6 +15,7 @@ int main()
 		fd1 = open(fifofile,O_RDONLY);
 		read(fd1, buf1, sizeof(buf1));
 		printf("P1: %s\t", buf1);
+		fflush(NULL);
 		close(fd1);
 
 		fd1 = open(fifofile,O_WRONLY);
