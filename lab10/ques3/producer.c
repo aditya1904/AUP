@@ -21,10 +21,9 @@ int main()
 			short *array;
 		}arg;
 
-		arg.val = 0;
+		arg.val = 1;
 		semctl(semid, 0, SETVAL, arg); 
 		i = 0;
-		printf("seems, that semaphore has been made.\n");
 		while(1){
 			if(i == 9){
 				ptr = shm;
@@ -33,9 +32,9 @@ int main()
 			sb.sem_num = 0;
 			sb.sem_op = -1;			
 			semop(semid, &sb, 1);	
-			printf("semaphore is with me.\n");
 			if(*ptr == 'p'){
 				// buffer is full.
+				printf("Buffer is full it seems.\n");
 				sb.sem_num = 0;
 				sb.sem_op = 1;			
 				semop(semid, &sb, 1);	

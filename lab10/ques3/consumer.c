@@ -14,16 +14,15 @@ int main()
 	ptr = shm;
 	if(semid >= 0){
 
-/*		union semun{
+		union semun{
 			int val;
 			struct semid_dss *buf;
 			short *array;
 		}arg;
 
-		arg.val = 0;
-		semctl(semid, 0, SETVAL, arg); */
+		arg.val = 1;
+		semctl(semid, 0, SETVAL, arg); 
 		i = 0;
-		printf("seems consumer is ready too.\n");
 		while(1){
 			if(i == 9){
 				i = 0;
@@ -33,15 +32,16 @@ int main()
 			sb.sem_num = 0;
 			sb.sem_op = -1;			
 			semop(semid, &sb, 1);
-			printf("got hold of the semaphore.\n");
 			if(*ptr == 'c'){
 				// buffer is empty.
+				printf("Buffer is empty\n");
 				sb.sem_num = 0;
 				sb.sem_op = 1;			
 				semop(semid, &sb, 1);
 				continue;
 			}else{
 				// get the semaphore
+				printf("Consuming\n");
 				*ptr = 'c';
 				ptr++;
 				i = (i + 1) % 10;
