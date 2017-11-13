@@ -23,12 +23,12 @@ int main(){
 	else if ( pid1 > 0 ){
 		// Parent Here //
 		close(p1[0]);	// Writing in Pipe 1
-		write(p1[1], cities[0], 16);
+		write(p1[1], cities[0], 16); //Writing "Mumbai" on Pipe 1
 		close(p1[1]);
 
 		close(p2[1]); // Reading in Pipe 2
 		if(read(p2[0], buf3, 16) == -1){
-			write(STDOUT_FILENO, "Pipe 2, Parent: Error:", 80);
+			perror("Pipe 2, Parent: Error:");
 		} else {
 			printf("In Parent: Pipe 2 Read: %s\n", buf3);
 		}
@@ -41,21 +41,21 @@ int main(){
 			//  CHILD 2 //
 			close(p3[1]);
 			if(read(p3[0], buf2, 16) == -1){
-				write(STDOUT_FILENO, "Pipe 3, Child 2: Error:", 80);
+				perror("Pipe 3, Child 2: Error:");
 			} else {
 				printf("In Child 2: Pipe 3 Read: %s\n", buf2);
 			}
 			close(p3[0]);
 
 			close(p4[0]);
-			write(p4[1], cities[2], 16);
+			write(p4[1], cities[2], 16);  //Writing "Cochin" on Pipe 4
 			close(p4[1]);
 			// CHILD 2 DONE //
 		} else {
 			// PARENT HERE //
 			close(p4[1]); // Reading in Pipe 4
 			if(read(p4[0], buf4, 16) == -1){
-				write(STDOUT_FILENO, "Pipe 4, PArent: Error:", 80);
+				perror("Pipe 4, PArent: Error:");
 			} else {
 				printf("In Parent: Pipe 4 Read: %s\n", buf4);
 			}
@@ -65,18 +65,18 @@ int main(){
 	else { // CHILD 1 (C1) //
 		close(p1[1]);
 		if(read(p1[0], buf1, 16) == -1){
-			write(STDOUT_FILENO, "Pipe 1, Child 1: Error:", 80);
+			perror("Pipe 1, Child 1: Error:");
 		} else {
 			printf("In Child 1: Pipe 1 Read: %s\n", buf1);
 		}
 		close(p1[0]);
 
 		close(p2[0]);
-		write(p2[1], cities[1], 16);
+		write(p2[1], cities[1], 16); // Writing "Delhi" on Pipe 2
 		close(p2[1]);
 
 		close(p3[0]);
-		write(p3[1], cities[3], 16);
+		write(p3[1], cities[3], 16); // Writing "Chennai" on Pipe 3
 		close(p3[1]);
 	}
 }
